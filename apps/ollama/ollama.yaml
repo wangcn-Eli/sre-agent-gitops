@@ -21,6 +21,15 @@ spec:
         image: ollama/ollama:latest
         ports:
         - containerPort: 11434
+        # 挂载PVC到Ollama数据目录
+        volumeMounts:
+        - name: ollama-storage
+          mountPath: /root/.ollama  # Ollama默认存储模型/配置的目录
+      # 定义卷，关联PVC
+      volumes:
+      - name: ollama-storage
+        persistentVolumeClaim:
+          claimName: ollama-pvc  # 关联创建的ollama-pvc
 ---
 apiVersion: v1
 kind: Service
